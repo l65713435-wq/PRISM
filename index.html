@@ -6,17 +6,17 @@
     <title>PRISM - Digital Gateway</title>
     <style>
         :root {
-            --primary: #00d2ff;
-            --secondary: #92fe9d;
+            --primary: #00f2fe;
+            --secondary: #7000ff;
             --accent: #ff00c8;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background: #050505;
+            background: #020205;
             color: #fff;
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -24,99 +24,119 @@
             overflow: hidden;
         }
 
-        /* 動く背景の光 */
-        .bg-glow {
+        /* 水晶玉のような光の屈折背景 */
+        .crystal-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, 
+                rgba(0, 242, 254, 0.2) 0%, 
+                rgba(112, 0, 255, 0.1) 30%, 
+                transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            animation: rotate 20s infinite linear;
+        }
+
+        .crystal-core {
             position: absolute;
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 210, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 200, 0.15) 0%, transparent 50%);
+                conic-gradient(from 0deg at 50% 50%, 
+                    transparent, rgba(255, 255, 255, 0.05), 
+                    transparent, rgba(0, 242, 254, 0.1), 
+                    transparent);
             z-index: -1;
-            filter: blur(80px);
-            animation: move 15s infinite alternate;
+            animation: spin 10s infinite linear;
         }
 
-        @keyframes move {
-            from { transform: scale(1); }
-            to { transform: scale(1.2) translate(5%, 5%); }
+        @keyframes rotate {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            50% { transform: translate(10%, 10%) scale(1.1); }
+            100% { transform: translate(-10%, -10%) scale(1); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .prism-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 60px 40px;
-            border-radius: 30px;
+            padding: 70px 50px;
+            border-radius: 40px;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 90%;
+            box-shadow: 
+                0 0 40px rgba(0, 242, 254, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            max-width: 450px;
+            width: 85%;
+            position: relative;
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 900;
-            margin: 0 0 10px 0;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            margin: 0 0 30px 0;
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, #fff 30%, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));
-        }
-
-        p {
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 40px;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.5));
         }
 
         .search-box {
             position: relative;
-            display: flex;
-            align-items: center;
         }
 
         input {
             width: 100%;
-            padding: 18px 30px;
-            border-radius: 50px;
+            padding: 18px 25px;
+            border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1rem;
             outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.4s;
+            box-sizing: border-box;
         }
 
         input:focus {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4), inset 0 0 10px rgba(0, 210, 255, 0.1);
-            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+            transform: scale(1.02);
         }
 
         .footer {
             position: absolute;
-            bottom: 20px;
-            font-size: 0.7rem;
+            bottom: 30px;
+            font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
+    <div class="crystal-bg"></div>
+    <div class="crystal-core"></div>
+    
     <div class="prism-card">
         <h1>PRISM</h1>
-        <p>BEYOND THE INFRARED</p>
         <form action="/api/proxy" method="GET">
             <div class="search-box">
                 <input type="text" name="url" placeholder="URLを入れてください" autocomplete="off">
             </div>
         </form>
     </div>
-    <div class="footer">Powered by PRISM Engine</div>
+
+    <div class="footer">PRISM Gateway Engine v1.0</div>
 </body>
 </html>

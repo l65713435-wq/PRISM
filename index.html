@@ -13,127 +13,127 @@
             --prism-5: #ff00c8;
         }
 
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            background: #050508;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
+            width: 100%;
+            height: 100%;
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            font-family: 'Inter', -apple-system, sans-serif;
             overflow: hidden;
         }
 
-        /* 背後の控えめな光 */
-        .bg-glow {
-            position: absolute;
-            width: 80vw;
-            height: 80vw;
-            background: radial-gradient(circle, rgba(112, 0, 255, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            filter: blur(100px);
-        }
-
-        /* メインの四角いカード */
-        .prism-card {
+        /* 画面全体が巨大なメインカード */
+        .prism-fullscreen-card {
             position: relative;
-            background: rgba(10, 10, 15, 0.8);
-            padding: 80px 60px;
-            border-radius: 30px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            z-index: 10;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             
-            /* カード自体にグラデーションの縁取り */
-            border: 2px solid transparent;
-            background-image: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.9)), 
+            /* 全体へのダイナミック・グラデーション */
+            background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
+            border: 4px solid transparent;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), 
                               linear-gradient(135deg, var(--prism-1), var(--prism-3), var(--prism-5));
             background-origin: border-box;
             background-clip: padding-box, border-box;
             
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8),
-                        0 0 30px rgba(112, 0, 255, 0.2);
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-sizing: border-box;
+            padding: 20px;
         }
 
-        .prism-card:hover {
-            transform: translateY(-5px) scale(1.01);
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9),
-                        0 0 50px rgba(0, 242, 254, 0.3);
-        }
-
-        /* PRISMの文字：さらに輝くグラデーション */
+        /* PRISMロゴ：さらに巨大化して主役に */
         h1 {
-            font-size: 5.5rem;
+            font-size: clamp(5rem, 15vw, 10rem); /* 画面サイズに合わせて自動調整 */
             font-weight: 950;
-            margin: 0 0 40px 0;
-            letter-spacing: 15px;
+            margin: 0 0 20px 0;
+            letter-spacing: 20px;
+            text-indent: 20px; /* 文字間隔のバランス調整 */
             background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+            animation: shine 8s linear infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 242, 254, 0.4));
         }
 
         @keyframes shine {
             to { background-position: 200% center; }
         }
 
-        /* 入力欄：カードに合わせてスタイリッシュに */
-        .input-wrapper {
+        /* 入力エリアのコンテナ */
+        .input-container {
+            width: 100%;
+            max-width: 600px;
             position: relative;
             margin-top: 20px;
         }
 
         input {
             width: 100%;
-            padding: 22px 30px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
+            padding: 25px 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             outline: none;
-            transition: 0.4s;
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             box-sizing: border-box;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         input:focus {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--prism-1);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.5), 
+                        inset 0 0 20px rgba(0, 242, 254, 0.2);
+            transform: scale(1.05);
         }
 
         input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 2px;
+            font-size: 1.2rem;
         }
 
-        .footer {
-            margin-top: 50px;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.2);
-            letter-spacing: 5px;
-            font-weight: 300;
+        /* 下部のステータスライン */
+        .status-bar {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 40px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .line {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--prism-1), transparent);
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
-    
-    <div class="prism-card">
+    <div class="prism-fullscreen-card">
         <h1>PRISM</h1>
-        <form action="/api/proxy" method="GET">
-            <div class="input-wrapper">
-                <input type="text" name="url" placeholder="URLを入れてください" autocomplete="off">
-            </div>
+        <form action="/api/proxy" method="GET" class="input-container">
+            <input type="text" name="url" placeholder="URLを入れてください" autocomplete="off">
         </form>
-        <div class="footer">SYSTEM.CORE.CONNECTED</div>
+        <div class="status-bar">
+            <span>System Ready</span>
+            <span>Encrypted Connection</span>
+        </div>
     </div>
 </body>
 </html>

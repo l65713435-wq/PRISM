@@ -22,40 +22,43 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            position: relative;
         }
 
-        /* 水晶玉のような光の屈折背景 */
+        /* 画面全体に広がる屈折光 */
         .crystal-bg {
             position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, 
-                rgba(0, 242, 254, 0.2) 0%, 
-                rgba(112, 0, 255, 0.1) 30%, 
-                transparent 70%);
-            border-radius: 50%;
-            filter: blur(60px);
-            z-index: -1;
-            animation: rotate 20s infinite linear;
-        }
-
-        .crystal-core {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            top: -50%;
+            left: -50%;
+            width: 200%; /* 2倍の大きさにして画面を覆う */
+            height: 200%;
             background: 
-                conic-gradient(from 0deg at 50% 50%, 
-                    transparent, rgba(255, 255, 255, 0.05), 
-                    transparent, rgba(0, 242, 254, 0.1), 
-                    transparent);
+                radial-gradient(circle at 30% 30%, rgba(0, 242, 254, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(112, 0, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 200, 0.1) 0%, transparent 50%);
+            filter: blur(100px);
             z-index: -1;
-            animation: spin 10s infinite linear;
+            animation: move-bg 25s infinite alternate ease-in-out;
         }
 
-        @keyframes rotate {
-            0% { transform: translate(-10%, -10%) scale(1); }
-            50% { transform: translate(10%, 10%) scale(1.1); }
-            100% { transform: translate(-10%, -10%) scale(1); }
+        /* 水晶の輝き（スリット光） */
+        .crystal-shimmer {
+            position: absolute;
+            width: 150vw;
+            height: 150vh;
+            background: repeating-conic-gradient(
+                from 0deg,
+                transparent 0deg 10deg,
+                rgba(255, 255, 255, 0.03) 15deg,
+                transparent 20deg 40deg
+            );
+            z-index: -1;
+            animation: spin 40s infinite linear;
+        }
+
+        @keyframes move-bg {
+            from { transform: translate(-5%, -5%) rotate(0deg); }
+            to { transform: translate(5%, 5%) rotate(10deg); }
         }
 
         @keyframes spin {
@@ -64,79 +67,72 @@
         }
 
         .prism-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(30px) saturate(150%);
-            -webkit-backdrop-filter: blur(30px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 70px 50px;
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 80px 50px;
             border-radius: 40px;
             text-align: center;
             box-shadow: 
-                0 0 40px rgba(0, 242, 254, 0.1),
-                inset 0 0 20px rgba(255, 255, 255, 0.05);
+                0 0 60px rgba(0, 0, 0, 0.8),
+                inset 0 0 30px rgba(255, 255, 255, 0.02);
             max-width: 450px;
             width: 85%;
-            position: relative;
+            z-index: 10;
         }
 
         h1 {
-            font-size: 4.5rem;
+            font-size: 5rem;
             font-weight: 900;
-            margin: 0 0 30px 0;
-            letter-spacing: 8px;
-            background: linear-gradient(135deg, #fff 30%, var(--primary), var(--secondary));
+            margin: 0 0 40px 0;
+            letter-spacing: 12px;
+            background: linear-gradient(135deg, #fff 20%, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.5));
-        }
-
-        .search-box {
-            position: relative;
+            filter: drop-shadow(0 0 30px rgba(0, 242, 254, 0.4));
         }
 
         input {
             width: 100%;
-            padding: 18px 25px;
-            border-radius: 15px;
+            padding: 20px 30px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.4);
             color: #fff;
-            font-size: 1rem;
+            font-size: 1.1rem;
             outline: none;
-            transition: 0.4s;
+            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
             box-sizing: border-box;
         }
 
         input:focus {
-            background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
-            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.4);
+            transform: scale(1.03);
+            background: rgba(0, 0, 0, 0.6);
         }
 
         .footer {
             position: absolute;
             bottom: 30px;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.2);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 3px;
         }
     </style>
 </head>
 <body>
     <div class="crystal-bg"></div>
-    <div class="crystal-core"></div>
+    <div class="crystal-shimmer"></div>
     
     <div class="prism-card">
         <h1>PRISM</h1>
         <form action="/api/proxy" method="GET">
-            <div class="search-box">
-                <input type="text" name="url" placeholder="URLを入れてください" autocomplete="off">
-            </div>
+            <input type="text" name="url" placeholder="URLを入れてください" autocomplete="off">
         </form>
     </div>
 
-    <div class="footer">PRISM Gateway Engine v1.0</div>
+    <div class="footer">PRISM CORE SYSTEM</div>
 </body>
 </html>

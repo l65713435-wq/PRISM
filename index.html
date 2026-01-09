@@ -7,172 +7,94 @@
     <style>
         :root {
             --prism-1: #00f2fe;
-            --prism-2: #4facfe;
+            --prism-1-rgb: 0, 242, 254;
             --prism-3: #7000ff;
-            --prism-4: #f093fb;
+            --prism-3-rgb: 112, 0, 255;
             --prism-5: #ff00c8;
+            --prism-5-rgb: 255, 0, 200;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Inter', -apple-system, sans-serif;
-            overflow: hidden;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #000; display: flex; align-items: center; justify-content: center;
+            font-family: 'Inter', sans-serif; overflow: hidden;
         }
 
-        /* 画面全体が巨大なメインカード */
         .prism-fullscreen-card {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
             border: 4px solid transparent;
             background-image: linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), 
                               linear-gradient(135deg, var(--prism-1), var(--prism-3), var(--prism-5));
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-            
-            box-sizing: border-box;
-            padding: 20px;
+            background-origin: border-box; background-clip: padding-box, border-box;
+            box-sizing: border-box; padding: 20px;
         }
 
-        /* PRISMロゴ：文字の後ろに光のエフェクト */
         h1 {
-            font-size: clamp(5rem, 15vw, 10rem);
-            font-weight: 950;
-            margin: 0 0 20px 0;
-            letter-spacing: 20px;
-            text-indent: 20px;
-            
-            /* 文字自体のグラデーション */
+            font-size: clamp(5rem, 15vw, 10rem); font-weight: 950; margin: 0 0 20px 0;
+            letter-spacing: 20px; text-indent: 20px;
             background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 8s linear infinite;
-            
-            /* ここからが新しい光のエフェクト */
-            position: relative; /* ::before の基準 */
-            z-index: 2; /* 文字を光より手前に */
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1)); /* 文字にもかすかな影 */
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 8s linear infinite; position: relative; z-index: 2;
         }
 
         h1::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%; /* 文字より少し大きく */
-            height: 150%; /* 文字より少し大きく */
-            background: radial-gradient(circle at center, 
-                rgba(var(--prism-1-rgb), 0.5) 0%,
-                rgba(var(--prism-3-rgb), 0.4) 30%,
-                rgba(var(--prism-5-rgb), 0.3) 60%,
-                transparent 80%
-            );
-            filter: blur(80px); /* ぼかして光感を出す */
-            transform: translate(-50%, -50%) scale(0.8); /* 中央に配置し少し小さめに開始 */
-            opacity: 0; /* 最初は透明 */
-            animation: crystal-pulse 10s infinite ease-out; /* 光の呼吸アニメーション */
-            z-index: 1; /* 文字より奥に */
+            content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%;
+            background: radial-gradient(circle at center, rgba(var(--prism-1-rgb), 0.5), rgba(var(--prism-5-rgb), 0.3), transparent 70%);
+            filter: blur(80px); transform: translate(-50%, -50%) scale(0.8);
+            animation: crystal-pulse 10s infinite ease-out; z-index: 1;
         }
 
-        /* RGB値の定義 (JavaScriptなしでCSS変数を使うためのトリック) */
-        :root {
-            --prism-1-rgb: 0, 242, 254;
-            --prism-3-rgb: 112, 0, 255;
-            --prism-5-rgb: 255, 0, 200;
-        }
-
-
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
+        @keyframes shine { to { background-position: 200% center; } }
         @keyframes crystal-pulse {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            20% { opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
-            80% { opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
         }
 
-        .input-container {
-            width: 100%;
-            max-width: 600px;
-            position: relative;
-            margin-top: 20px;
-        }
+        .input-container { width: 100%; max-width: 600px; position: relative; margin-top: 20px; }
 
         input {
-            width: 100%;
-            padding: 25px 40px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            font-size: 1.5rem;
-            outline: none;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            box-sizing: border-box;
-            text-align: center;
-            backdrop-filter: blur(10px);
+            width: 100%; padding: 25px 40px; border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05);
+            color: #fff; font-size: 1.5rem; outline: none; text-align: center;
+            transition: 0.5s; backdrop-filter: blur(10px);
         }
 
         input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--prism-1);
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.5), 
-                        inset 0 0 20px rgba(0, 242, 254, 0.2);
-            transform: scale(1.05);
+            border-color: var(--prism-1); box-shadow: 0 0 50px rgba(0, 242, 254, 0.4);
+            transform: scale(1.05); background: rgba(255, 255, 255, 0.1);
         }
 
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-            letter-spacing: 2px;
-            font-size: 1.2rem;
-        }
-
-        .status-bar {
-            position: absolute;
-            bottom: 40px;
-            display: flex;
-            gap: 40px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.8rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
-
-        .line {
-            width: 100px;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--prism-1), transparent);
-            margin-top: 10px;
-        }
+        .status-bar { position: absolute; bottom: 40px; color: rgba(255, 255, 255, 0.3); font-size: 0.8rem; letter-spacing: 4px; }
     </style>
 </head>
 <body>
     <div class="prism-fullscreen-card">
         <h1>PRISM</h1>
-        <form action="/api/proxy" method="GET" class="input-container">
-            <input type="text" name="url" placeholder="URLを入れてください" autocomplete="off">
-        </form>
-        <div class="status-bar">
-            <span>System Ready</span>
-            <span>Encrypted Connection</span>
+        <div class="input-container">
+            <input type="text" id="target" placeholder="URLまたは検索ワード" autocomplete="off" onkeydown="if(event.key==='Enter') navigate()">
         </div>
+        <div class="status-bar">SYSTEM ONLINE</div>
     </div>
+
+    <script>
+        function navigate() {
+            const input = document.getElementById('target').value;
+            if (!input) return;
+
+            let url;
+            // 入力が http から始まるか、ドットを含んでいればURLと判定
+            if (input.includes('.') || input.startsWith('http')) {
+                url = input.startsWith('http') ? input : 'https://' + input;
+            } else {
+                // それ以外はGoogle検索
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(input);
+            }
+            
+            // プロキシ経由で移動！
+            window.location.href = '/api/proxy?url=' + encodeURIComponent(url);
+        }
+    </script>
 </body>
 </html>

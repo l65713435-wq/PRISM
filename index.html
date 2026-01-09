@@ -17,7 +17,7 @@
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #000; display: flex; align-items: center; justify-content: center;
-            font-family: 'Inter', sans-serif; overflow: hidden;
+            font-family: 'Inter', 'Orbitron', sans-serif; overflow: hidden;
         }
 
         .prism-fullscreen-card {
@@ -29,6 +29,18 @@
                               linear-gradient(135deg, var(--prism-1), var(--prism-3), var(--prism-5));
             background-origin: border-box; background-clip: padding-box, border-box;
             box-sizing: border-box; padding: 20px;
+        }
+
+        /* 🆕 デジタル時計のスタイル */
+        .digital-clock {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 8px;
+            margin-bottom: -10px;
+            z-index: 3;
+            text-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.6);
+            font-family: monospace;
         }
 
         h1 {
@@ -71,7 +83,10 @@
 </head>
 <body>
     <div class="prism-fullscreen-card">
+        <div class="digital-clock" id="clock">00:00:00</div>
+        
         <h1>PRISM</h1>
+        
         <div class="input-container">
             <input type="text" id="target" placeholder="URLまたは検索ワード" autocomplete="off" onkeydown="if(event.key==='Enter') navigate()">
         </div>
@@ -79,20 +94,26 @@
     </div>
 
     <script>
+        // 🆕 時計を更新する関数
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); // 起動時にすぐ表示
+
         function navigate() {
             const input = document.getElementById('target').value;
             if (!input) return;
-
             let url;
-            // 入力が http から始まるか、ドットを含んでいればURLと判定
             if (input.includes('.') || input.startsWith('http')) {
                 url = input.startsWith('http') ? input : 'https://' + input;
             } else {
-                // それ以外はGoogle検索
                 url = 'https://www.google.com/search?q=' + encodeURIComponent(input);
             }
-            
-            // プロキシ経由で移動！
             window.location.href = '/api/proxy?url=' + encodeURIComponent(url);
         }
     </script>

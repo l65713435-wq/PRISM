@@ -10,19 +10,16 @@
             --prism-3: #7000ff; --prism-3-rgb: 112, 0, 255;
             --prism-5: #ff00c8; --prism-5-rgb: 255, 0, 200;
         }
-
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #000; color: #fff; font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
         }
-
         .prism-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
             z-index: -1;
         }
-
         .tab-container {
             margin-top: 40px; display: flex; gap: 10px;
             background: rgba(255, 255, 255, 0.05); padding: 5px; border-radius: 15px;
@@ -36,15 +33,12 @@
             background: rgba(var(--prism-1-rgb), 0.2); color: var(--prism-1);
             box-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.3);
         }
-
         .content-section {
             display: none; width: 100%; max-width: 900px;
             flex-direction: column; align-items: center; padding-top: 8vh;
         }
         .content-section.active { display: flex; animation: fadeIn 0.5s ease; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         h1 {
             font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 950; margin: 0;
             letter-spacing: 15px; text-indent: 15px;
@@ -53,15 +47,11 @@
             animation: shine 8s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
-
         input {
             width: 85%; max-width: 550px; padding: 22px; margin-top: 40px;
             border-radius: 18px; border: 2px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.3rem;
-            transition: 0.4s; backdrop-filter: blur(15px);
         }
-        input:focus { border-color: var(--prism-1); box-shadow: 0 0 40px rgba(var(--prism-1-rgb), 0.4); outline: none; }
-
         .game-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 25px; width: 90%; margin-top: 40px;
@@ -71,16 +61,12 @@
             padding: 35px 20px; border-radius: 25px; text-align: center; cursor: pointer;
             transition: 0.3s; text-decoration: none; color: #fff;
         }
-        .game-card:hover {
-            transform: translateY(-8px); background: rgba(var(--prism-3-rgb), 0.2);
-            border-color: var(--prism-3); box-shadow: 0 15px 40px rgba(var(--prism-3-rgb), 0.4);
-        }
-        .horror-tag { color: #ff4d4d; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 2px; }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); }
+        .horror-tag { color: #ff4d4d; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body>
     <div class="prism-bg"></div>
-
     <div class="tab-container">
         <button id="btn-p" class="tab-btn active" onclick="switchTab('proxy')">PROXY</button>
         <button id="btn-g" class="tab-btn" onclick="switchTab('games')">GAMES</button>
@@ -92,23 +78,20 @@
     </section>
 
     <section id="games-section" class="content-section">
-        <h2 style="letter-spacing: 15px; opacity: 0.7; font-size: 1rem; margin-bottom: 10px;">SELECTION</h2>
         <div class="game-grid">
             <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
-                <span style="color:var(--prism-1); font-size:0.7rem; font-weight:bold; display:block; margin-bottom:8px;">ALL-IN-ONE</span>
                 <h3>CrazyGames</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://granny-online.github.io/')">
+            <div class="game-card" onclick="fastNav('https://poki.com/en/g/granny')">
                 <span class="horror-tag">HORROR</span>
-                <h3>Granny Online</h3>
+                <h3>Granny</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://fnafonline.github.io/')">
+            <div class="game-card" onclick="fastNav('https://www.crazygames.com/game/five-nights-at-freddys')">
                 <span class="horror-tag">HORROR</span>
-                <h3>FNaF Online</h3>
+                <h3>FNaF</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://unblocked-games-76.glitch.me/')">
-                <span style="color:gray; font-size:0.7rem; font-weight:bold; display:block; margin-bottom:8px;">STABLE MIRROR</span>
-                <h3>UG 76 Mirror</h3>
+            <div class="game-card" onclick="fastNav('https://www.arkadium.com/free-online-games/')">
+                <h3>Game Portal</h3>
             </div>
         </div>
     </section>
@@ -125,14 +108,12 @@
                 document.getElementById('games-section').classList.add('active');
             }
         }
-
         function navigate() {
             const input = document.getElementById('target').value;
             if (!input) return;
             let url = (input.includes('.') || input.startsWith('http')) ? (input.startsWith('http') ? input : 'https://' + input) : 'https://www.google.com/search?q=' + encodeURIComponent(input);
             fastNav(url);
         }
-
         function fastNav(url) {
             window.location.href = '/api/proxy?url=' + encodeURIComponent(url);
         }

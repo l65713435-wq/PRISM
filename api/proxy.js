@@ -1,22 +1,39 @@
 const fetch = require('node-fetch');
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
     const { url } = req.query;
-    if (!url) return res.send('URLを入力してください。');
 
-    const targetUrl = url.startsWith('http') ? url : `https://${url}`;
+    if (!url) {
+        return res.status(400).send('URL is required');
+    }
 
     try {
-        const response = await fetch(targetUrl);
-        let content = await response.text();
+        const targetUrl = url.startsWith('http') ? url : `https://${url}`;
+        const response = await fetch(targetUrl, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+            }
+        });
 
-        // 簡易的なパス書き換え（画像やリンクをある程度動くようにする）
-        const origin = new URL(targetUrl).origin;
-        content = content.replace(/(src|href)="\/(?!\/)/g, `$1="${origin}/`);
+        const contentType = response.headers.get('content-type');
+        let body = await response.buffer();
 
-        res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.status(200).send(content);
-    } catch (e) {
-        res.status(500).send('PRISM透過エラー: ' + e.message);
+        // HTMLやJSの場合、中身を書き換えてリンク切れを防ぐ
+        if (contentType && (contentType.includes('text/html') || contentType.includes('application/javascript'))) {
+            let text = body.toString();
+            const baseUrl = new URL(targetUrl);
+            const origin = baseUrl.origin;
+
+            // サイト内の絶対パスをプロキシ経由に変換する魔法の処理
+            text = text.replace(/(src|href|action)=["']\/(?!\/)/g, `$1="/api/proxy?url=${origin}/`);
+            body = Buffer.from(text);
+        }
+
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Access-Control-Allow-Origin', '*'); // セキュリティ制限を回避
+        res.send(body);
+
+    } catch (error) {
+        res.status(500).send('Error fetching the URL: ' + error.message);
     }
-}
+};

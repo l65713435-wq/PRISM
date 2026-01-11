@@ -14,23 +14,26 @@ module.exports = async (req, res) => {
         });
 
         const contentType = response.headers.get('content-type');
-        res.setHeader('Content-Type', contentType);
         res.setHeader('Access-Control-Allow-Origin', '*');
 
-        if (contentType && contentType.includes('text/html')) {
-            let html = await response.text();
-            const baseUrl = new URL(targetUrl).origin;
+        // HTMLやCSSの中身をスキャンして、リンクを無理やりプロキシ経由にする
+        if (contentType && (contentType.includes('text/html') || contentType.includes('text/css'))) {
+            let body = await response.text();
+            const origin = new URL(targetUrl).origin;
             
-            // デザイン崩れを防ぐために <base> タグを強制挿入する魔法
-            const baseTag = `<base href="${baseUrl}/">`;
-            html = html.replace('<head>', `<head>${baseTag}`);
+            // 「/」で始まるリンクを「プロキシ経由の絶対パス」に置換
+            const proxyPrefix = `/api/proxy?url=${origin}`;
+            body = body.replace(/(src|href|action)=["']\/(?!\/)/g, `$1="${proxyPrefix}/`);
             
-            res.send(html);
+            res.setHeader('Content-Type', contentType);
+            res.send(body);
         } else {
+            // 画像やデータはそのまま流す
             const buffer = await response.buffer();
+            res.setHeader('Content-Type', contentType);
             res.send(buffer);
         }
     } catch (e) {
-        res.status(500).send('Proxy Error: ' + e.message);
+        res.status(500).send('Proxy Error');
     }
 };

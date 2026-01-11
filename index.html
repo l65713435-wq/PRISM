@@ -3,38 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRISM - Portal</title>
+    <title>PRISM - Game Portal</title>
     <style>
-        :root { --p-color: #00f2fe; }
+        :root { --p-color: #00f2fe; --p-red: #ff4d4d; }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #000; color: #fff; font-family: sans-serif;
+            background: #000; color: #fff; font-family: 'Segoe UI', sans-serif;
             display: flex; flex-direction: column; align-items: center;
         }
-        .tabs { margin: 20px 0; display: flex; gap: 10px; }
+        .tabs { margin: 25px 0; display: flex; gap: 15px; }
         .tab-btn {
-            padding: 12px 30px; border-radius: 30px; border: 1px solid #444;
-            background: #111; color: #fff; cursor: pointer; transition: 0.3s;
+            padding: 15px 35px; border-radius: 50px; border: 2px solid #333;
+            background: #111; color: #fff; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
-        .tab-btn.active { background: var(--p-color); color: #000; border-color: var(--p-color); }
+        .tab-btn.active { background: var(--p-color); color: #000; border-color: var(--p-color); box-shadow: 0 0 20px rgba(0,242,254,0.4); }
         
-        .section { display: none; width: 90%; max-content: 800px; flex-direction: column; align-items: center; }
-        .section.active { display: flex; }
+        .section { display: none; width: 90%; max-width: 800px; flex-direction: column; align-items: center; }
+        .section.active { display: flex; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-size: 3rem; letter-spacing: 5px; color: var(--p-color); margin: 20px 0; }
-        input { width: 100%; max-width: 500px; padding: 15px; border-radius: 10px; border: none; font-size: 1.1rem; outline: none; }
+        h1 { font-size: 3.5rem; letter-spacing: 8px; color: var(--p-color); margin: 30px 0; font-weight: 900; }
+        input { width: 100%; max-width: 500px; padding: 20px; border-radius: 15px; border: none; font-size: 1.2rem; background: #222; color: #fff; text-align: center; }
 
         .grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-            gap: 15px; width: 100%; margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 20px; width: 100%; margin-top: 40px;
         }
         .card {
-            background: #111; padding: 20px; border-radius: 15px; 
-            text-align: center; cursor: pointer; border: 1px solid #222; transition: 0.3s;
+            background: #111; padding: 25px; border-radius: 20px; 
+            text-align: center; cursor: pointer; border: 2px solid #222; transition: 0.3s;
         }
-        .card:hover { border-color: var(--p-color); transform: translateY(-3px); }
-        .card h3 { margin: 0; font-size: 1rem; }
+        .card:hover { border-color: var(--p-color); transform: scale(1.05); background: #1a1a1a; }
+        .card.horror:hover { border-color: var(--p-red); box-shadow: 0 0 15px rgba(255,77,77,0.3); }
+        .card h3 { margin: 0; font-size: 1.2rem; }
+        .tag { font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 5px; margin-bottom: 10px; display: inline-block; }
+        .tag-horror { background: var(--p-red); color: #000; }
+        .tag-main { background: var(--p-color); color: #000; }
     </style>
 </head>
 <body>
@@ -46,17 +51,29 @@
 
     <section id="p" class="section active">
         <h1>PRISM</h1>
-        <input type="text" id="in" placeholder="URLを入力するか検索..." onkeydown="if(event.key==='Enter') nav()">
-        <p style="color: #666; font-size: 0.8rem; margin-top: 15px;">Enterキーで移動します</p>
+        <input type="text" id="in" placeholder="URL or Keywords..." onkeydown="if(event.key==='Enter') nav()">
+        <p style="color: #444; margin-top: 20px; font-size: 0.9rem;">Type and press Enter to start browsing</p>
     </section>
 
     <section id="g" class="section">
         <div class="grid">
-            <div class="card" onclick="f('https://www.crazygames.com')"><h3>CrazyGames</h3></div>
+            <div class="card" onclick="f('https://www.crazygames.com')">
+                <span class="tag tag-main">PORTAL</span>
+                <h3>CrazyGames</h3>
+            </div>
+            
+            <div class="card horror" onclick="f('https://www.google.com/search?q=granny+unblocked+github+io')">
+                <span class="tag tag-horror">HORROR</span>
+                <h3>Granny</h3>
+            </div>
+            
+            <div class="card horror" onclick="f('https://www.google.com/search?q=fnaf+web+unblocked+games')">
+                <span class="tag tag-horror">HORROR</span>
+                <h3>FNaF</h3>
+            </div>
+
             <div class="card" onclick="f('https://paper-io.com')"><h3>Paper.io</h3></div>
             <div class="card" onclick="f('https://hole-io.com')"><h3>Hole.io</h3></div>
-            <div class="card" onclick="f('https://voxiom.io')"><h3>Voxiom.io</h3></div>
-            <div class="card" onclick="f('https://krunker.io')"><h3>Krunker.io</h3></div>
             <div class="card" onclick="f('https://sites.google.com/site/unblockedgames76/')"><h3>UG 76</h3></div>
         </div>
     </section>
@@ -69,12 +86,14 @@
             if(id==='p') document.getElementById('t1').classList.add('active');
             else document.getElementById('t2').classList.add('active');
         }
+
         function nav() {
             const v = document.getElementById('in').value;
             if(!v) return;
             const url = (v.includes('.') || v.startsWith('http')) ? (v.startsWith('http') ? v : 'https://'+v) : 'https://www.google.com/search?q='+encodeURIComponent(v);
             f(url);
         }
+
         function f(url) {
             window.location.href = '/api/proxy?url=' + encodeURIComponent(url);
         }

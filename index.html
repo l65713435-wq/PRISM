@@ -17,21 +17,19 @@
             display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
         }
 
-        /* かっこいい背景グラデーション */
         .prism-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
             z-index: -1;
         }
 
-        /* 切り替えタブ */
         .tab-container {
             margin-top: 40px; display: flex; gap: 10px;
             background: rgba(255, 255, 255, 0.05); padding: 5px; border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10;
         }
         .tab-btn {
-            padding: 10px 30px; border-radius: 12px; border: none; background: transparent;
+            padding: 12px 35px; border-radius: 12px; border: none; background: transparent;
             color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: 0.3s; font-weight: bold;
         }
         .tab-btn.active {
@@ -39,18 +37,16 @@
             box-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.3);
         }
 
-        /* 各セクション */
         .content-section {
             display: none; width: 100%; max-width: 900px;
-            flex-direction: column; align-items: center; padding-top: 5vh;
+            flex-direction: column; align-items: center; padding-top: 8vh;
         }
         .content-section.active { display: flex; animation: fadeIn 0.5s ease; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 以前のPRISMロゴスタイル */
         h1 {
-            font-size: clamp(3rem, 10vw, 6rem); font-weight: 950; margin: 0;
+            font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 950; margin: 0;
             letter-spacing: 15px; text-indent: 15px;
             background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -58,30 +54,29 @@
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* 入力ボックス */
         input {
-            width: 80%; max-width: 500px; padding: 20px; margin-top: 30px;
-            border-radius: 15px; border: 2px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.2rem;
-            transition: 0.4s; backdrop-filter: blur(10px);
+            width: 85%; max-width: 550px; padding: 22px; margin-top: 40px;
+            border-radius: 18px; border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.3rem;
+            transition: 0.4s; backdrop-filter: blur(15px);
         }
-        input:focus { border-color: var(--prism-1); box-shadow: 0 0 30px rgba(var(--prism-1-rgb), 0.4); outline: none; }
+        input:focus { border-color: var(--prism-1); box-shadow: 0 0 40px rgba(var(--prism-1-rgb), 0.4); outline: none; transform: scale(1.02); }
 
-        /* ゲームグリッド */
         .game-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px; width: 90%; margin-top: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px; width: 90%; margin-top: 40px;
         }
         .game-card {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 25px; border-radius: 20px; text-align: center; cursor: pointer;
+            background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 35px 20px; border-radius: 25px; text-align: center; cursor: pointer;
             transition: 0.3s; text-decoration: none; color: #fff;
         }
         .game-card:hover {
-            transform: translateY(-5px); background: rgba(var(--prism-3-rgb), 0.2);
-            border-color: var(--prism-3); box-shadow: 0 10px 30px rgba(var(--prism-3-rgb), 0.3);
+            transform: translateY(-8px); background: rgba(var(--prism-3-rgb), 0.2);
+            border-color: var(--prism-3); box-shadow: 0 15px 40px rgba(var(--prism-3-rgb), 0.4);
         }
-        .horror-tag { color: #ff4d4d; font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
+        .horror-tag { color: #ff4d4d; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 2px; }
+        h3 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -93,19 +88,29 @@
     </div>
 
     <section id="proxy-section" class="content-section active">
-        <h1 id="main-logo">PRISM</h1>
-        <input type="text" id="target" placeholder="URL or Search Word" onkeydown="if(event.key==='Enter') navigate()">
+        <h1>PRISM</h1>
+        <input type="text" id="target" placeholder="URL or Keywords" onkeydown="if(event.key==='Enter') navigate()">
     </section>
 
     <section id="games-section" class="content-section">
-        <h2 style="letter-spacing: 10px; opacity: 0.8;">GAME HUB</h2>
+        <h2 style="letter-spacing: 15px; opacity: 0.7; font-size: 1rem; margin-bottom: 10px;">SELECTION</h2>
         <div class="game-grid">
-            <div class="game-card" onclick="fastNav('https://www.crazygames.com')"><h3>CrazyGames</h3></div>
-            <div class="game-card" onclick="fastNav('https://ubg76.github.io/granny/')"><span class="horror-tag">HORROR</span><h3>Granny</h3></div>
-            <div class="game-card" onclick="fastNav('https://fnaf.games/')"><span class="horror-tag">HORROR</span><h3>FNaF</h3></div>
-            <div class="game-card" onclick="fastNav('https://paper-io.com')"><h3>Paper.io</h3></div>
-            <div class="game-card" onclick="fastNav('https://hole-io.com')"><h3>Hole.io</h3></div>
-            <div class="game-card" onclick="fastNav('https://sites.google.com/site/unblockedgames76/')"><h3>UG 76</h3></div>
+            <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
+                <span style="color:var(--prism-1); font-size:0.7rem; font-weight:bold; display:block; margin-bottom:8px;">ALL-IN-ONE</span>
+                <h3>CrazyGames</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://sites.google.com/site/unblockedgames76/granny')">
+                <span class="horror-tag">HORROR</span>
+                <h3>Granny</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
+                <span class="horror-tag">HORROR</span>
+                <h3>FNaF Online</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://sites.google.com/site/unblockedgames76/')">
+                <span style="color:gray; font-size:0.7rem; font-weight:bold; display:block; margin-bottom:8px;">MIRROR</span>
+                <h3>UG 76</h3>
+            </div>
         </div>
     </section>
 

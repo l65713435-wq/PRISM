@@ -51,6 +51,7 @@
             width: 85%; max-width: 550px; padding: 22px; margin-top: 40px;
             border-radius: 18px; border: 2px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.3rem;
+            backdrop-filter: blur(10px);
         }
         .game-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -61,7 +62,7 @@
             padding: 35px 20px; border-radius: 25px; text-align: center; cursor: pointer;
             transition: 0.3s; text-decoration: none; color: #fff;
         }
-        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); box-shadow: 0 10px 30px rgba(var(--prism-1-rgb), 0.2); }
         .horror-tag { color: #ff4d4d; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; display: block; }
     </style>
 </head>
@@ -82,16 +83,16 @@
             <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
                 <h3>CrazyGames</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://poki.com/en/g/granny')">
+            <div class="game-card" onclick="fastNav('https://html5.gamedistribution.com/69d705d763d94c6599ca5530b13f2747/')">
                 <span class="horror-tag">HORROR</span>
                 <h3>Granny</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://www.crazygames.com/game/five-nights-at-freddys')">
+            <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
                 <span class="horror-tag">HORROR</span>
                 <h3>FNaF</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://www.arkadium.com/free-online-games/')">
-                <h3>Game Portal</h3>
+            <div class="game-card" onclick="fastNav('https://www.kiloo.com/en/free-online-games/')">
+                <h3>Kiloo Games</h3>
             </div>
         </div>
     </section>

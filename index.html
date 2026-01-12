@@ -43,16 +43,15 @@
         input {
             width: 85%; max-width: 550px; padding: 22px; margin-top: 40px;
             border-radius: 18px; border: 2px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.3rem;
-            backdrop-filter: blur(15px);
+            background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.2rem;
         }
         .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; width: 90%; margin-top: 40px; }
         .game-card {
             background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1);
             padding: 35px 20px; border-radius: 25px; text-align: center; cursor: pointer;
-            transition: 0.3s; text-decoration: none; color: #fff;
+            transition: 0.3s; color: #fff;
         }
-        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.1); }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); }
         .horror-tag { color: #ff4d4d; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; display: block; }
     </style>
 </head>
@@ -70,20 +69,16 @@
 
     <section id="games-section" class="content-section">
         <div class="game-grid">
-            <div class="game-card" onclick="fastNav('https://www.google.com/search?q=unblocked+games+premium+granny')">
+            <div class="game-card" onclick="fastNav('https://granny-online.github.io/')">
                 <span class="horror-tag">HORROR</span>
                 <h3>Granny</h3>
-                <p style="font-size: 0.7rem; color: #666; margin-top: 5px;">(Find Mirror Link)</p>
             </div>
-            <div class="game-card" onclick="fastNav('https://fnaf-online.io/')">
+            <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
                 <span class="horror-tag">HORROR</span>
                 <h3>FNaF Online</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://nowgg.me/')">
-                <span style="color:var(--prism-1); font-size:0.7rem; font-weight:bold; display:block; margin-bottom:8px;">CLOUD</span>
-                <h3>now.gg (Proxy)</h3>
-            </div>
             <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
+                <span style="color:var(--prism-1); font-size:0.7rem; font-weight:bold; display:block; margin-bottom:8px;">PORTAL</span>
                 <h3>CrazyGames</h3>
             </div>
         </div>
@@ -104,7 +99,8 @@
         function navigate() {
             const input = document.getElementById('target').value;
             if (!input) return;
-            let url = (input.includes('.') || input.startsWith('http')) ? (input.startsWith('http') ? input : 'https://' + input) : 'https://www.google.com/search?q=' + encodeURIComponent(input);
+            // 検索エンジンをDuckDuckGoに変更（Googleよりプロキシを通しやすい）
+            let url = (input.includes('.') || input.startsWith('http')) ? (input.startsWith('http') ? input : 'https://' + input) : 'https://duckduckgo.com/?q=' + encodeURIComponent(input);
             fastNav(url);
         }
         function fastNav(url) {

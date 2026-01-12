@@ -11,46 +11,50 @@
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #000; color: #fff; font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
         }
         .prism-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
             z-index: -1;
         }
-        .tab-container {
-            margin: 30px 0; display: flex; gap: 10px; z-index: 100;
-        }
+        .tab-container { margin: 40px 0; display: flex; gap: 10px; z-index: 100; }
         .tab-btn {
-            padding: 10px 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
-            background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; transition: 0.3s;
+            padding: 12px 35px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; transition: 0.3s; font-weight: bold;
         }
-        .tab-btn.active { background: var(--prism-1); color: #000; font-weight: bold; }
+        .tab-btn.active { background: var(--prism-1); color: #000; box-shadow: 0 0 15px var(--prism-1); }
 
-        .content-section {
-            display: none; width: 100%; height: 100%; flex-direction: column; align-items: center;
+        .content-section { display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center; padding-top: 5vh; }
+        .content-section.active { display: flex; animation: fadeIn 0.5s ease; }
+
+        h1 {
+            font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 950; margin: 0;
+            letter-spacing: 15px; text-indent: 15px;
+            background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 8s linear infinite;
         }
-        .content-section.active { display: flex; }
+        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ゲーム表示用の枠 */
-        #game-frame {
-            width: 100%; height: calc(100vh - 120px); border: none; display: none;
+        input { width: 85%; max-width: 550px; padding: 22px; margin-top: 40px; border-radius: 18px; border: 2px solid #333; background: #111; color: #fff; text-align: center; font-size: 1.3rem; }
+
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; width: 90%; margin-top: 40px; }
+        .game-card {
+            background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 20px; border-radius: 25px; text-align: center; cursor: pointer;
+            transition: 0.3s; color: #fff;
         }
-
-        h1 { font-size: 4rem; letter-spacing: 15px; margin-top: 10vh; background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        input { width: 80%; max-width: 500px; padding: 20px; border-radius: 15px; border: 2px solid #333; background: #111; color: #fff; text-align: center; font-size: 1.2rem; }
-
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 80%; margin-top: 50px; }
-        .game-card { background: #111; padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
-        .game-card:hover { border-color: var(--prism-1); transform: translateY(-5px); }
-        .horror-tag { color: #ff4d4d; font-size: 0.7rem; display: block; margin-bottom: 5px; }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); background: rgba(var(--prism-1), 0.1); }
+        .horror-tag { color: #ff4d4d; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body>
     <div class="prism-bg"></div>
     <div class="tab-container">
-        <button id="btn-p" class="tab-btn active" onclick="showTab('p')">PROXY</button>
-        <button id="btn-g" class="tab-btn" onclick="showTab('g')">GAMES</button>
+        <button id="btn-p" class="tab-btn active" onclick="switchTab('p')">PROXY</button>
+        <button id="btn-g" class="tab-btn" onclick="switchTab('g')">GAMES</button>
     </div>
 
     <section id="p-sec" class="content-section active">
@@ -59,23 +63,21 @@
     </section>
 
     <section id="g-sec" class="content-section">
-        <div id="grid" class="game-grid">
-            <div class="game-card" onclick="loadGame('https://www.crazygames.com/embed/granny')">
+        <div class="game-grid">
+            <div class="game-card" onclick="openGame('https://www.crazygames.com/game/granny')">
                 <span class="horror-tag">HORROR</span><h3>Granny</h3>
             </div>
-            <div class="game-card" onclick="loadGame('https://www.crazygames.com/embed/five-nights-at-freddys')">
+            <div class="game-card" onclick="openGame('https://www.crazygames.com/game/five-nights-at-freddys')">
                 <span class="horror-tag">HORROR</span><h3>FNaF</h3>
             </div>
-            <div class="game-card" onclick="loadGame('https://www.crazygames.com')">
+            <div class="game-card" onclick="openGame('https://www.crazygames.com')">
                 <h3>CrazyGames</h3>
             </div>
         </div>
-        <iframe id="game-frame"></iframe>
-        <button id="back-btn" style="display:none; margin-top:10px; padding:10px; cursor:pointer;" onclick="closeGame()">ゲームを閉じる</button>
     </section>
 
     <script>
-        function showTab(t) {
+        function switchTab(t) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if(t === 'p') {
@@ -87,26 +89,9 @@
             }
         }
 
-        function loadGame(url) {
-            const frame = document.getElementById('game-frame');
-            const grid = document.getElementById('grid');
-            const backBtn = document.getElementById('back-btn');
-            
-            grid.style.display = 'none';
-            frame.style.display = 'block';
-            backBtn.style.display = 'block';
-            frame.src = url;
-        }
-
-        function closeGame() {
-            const frame = document.getElementById('game-frame');
-            const grid = document.getElementById('grid');
-            const backBtn = document.getElementById('back-btn');
-            
-            frame.src = '';
-            frame.style.display = 'none';
-            grid.style.display = 'grid';
-            backBtn.style.display = 'none';
+        // 🆕 プロキシを通さず別タブで開く（確実な方法）
+        function openGame(url) {
+            window.open(url, '_blank');
         }
 
         function navigate() {

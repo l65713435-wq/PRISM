@@ -34,14 +34,15 @@
         h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 950; margin: 0; letter-spacing: 15px; text-indent: 15px; background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 8s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
         
-        input { width: 90%; max-width: 500px; padding: 20px; margin-top: 30px; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.1rem; }
+        input { width: 90%; max-width: 500px; padding: 20px; margin-top: 30px; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.1rem; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--prism-1); box-shadow: 0 0 20px rgba(var(--prism-1-rgb), 0.2); }
         
         .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; margin-top: 30px; }
         .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px 15px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; color: #fff; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.1); }
         .tag { font-size: 0.65rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         .tag-cloud { color: var(--prism-1); }
-        .tag-portal { color: #aaa; }
+        .tag-alt { color: #f39c12; }
         h3 { margin: 0; font-size: 1.1rem; }
     </style>
 </head>
@@ -54,7 +55,7 @@
 
     <section id="proxy-section" class="content-section active">
         <h1>PRISM</h1>
-        <input type="text" id="target" placeholder="URL or Keywords" onkeydown="if(event.key==='Enter') navigate()">
+        <input type="text" id="target" placeholder="URL or Keywords (via DuckDuckGo)" onkeydown="if(event.key==='Enter') navigate()">
     </section>
 
     <section id="games-section" class="content-section">
@@ -62,23 +63,23 @@
             <div class="game-card" onclick="fastNav('https://nowgg.me/')">
                 <span class="tag tag-cloud">CLOUD 1</span><h3>now.gg</h3>
             </div>
-            <div class="game-card" onclick="fastNav('https://x.bluestacks.com/')">
-                <span class="tag tag-cloud">CLOUD 2</span><h3>BlueStacks X</h3>
+            <div class="game-card" onclick="fastNav('https://www.blooket.com/')">
+                <span class="tag tag-alt">QUIZ GAME</span><h3>Blooket</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://www.1001games.com/')">
+                <span class="tag" style="color:#2ecc71;">STABLE</span><h3>1001 Games</h3>
             </div>
             <div class="game-card" onclick="fastNav('https://gamesnacks.com/')">
                 <span class="tag" style="color:#4285F4;">LIGHTWEIGHT</span><h3>GameSnacks</h3>
             </div>
             <div class="game-card" onclick="fastNav('https://www.y8.com/')">
-                <span class="tag tag-portal">BIG PORTAL</span><h3>Y8 Games</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://armorgames.com/')">
-                <span class="tag tag-portal">CLASSIC</span><h3>Armor Games</h3>
+                <span class="tag" style="color:#aaa;">BIG PORTAL</span><h3>Y8 Games</h3>
             </div>
             <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
                 <span style="color:#ff4d4d;" class="tag">HORROR</span><h3>FNaF Online</h3>
             </div>
             <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
-                <span class="tag tag-portal">STABLE</span><h3>CrazyGames</h3>
+                <span class="tag" style="color:#aaa;">CLASSIC</span><h3>CrazyGames</h3>
             </div>
         </div>
     </section>

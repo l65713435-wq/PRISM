@@ -20,42 +20,29 @@
             background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
             z-index: -1;
         }
-        .tab-container { margin-top: 40px; display: flex; gap: 10px; z-index: 10; }
+        .tab-container { margin-top: 30px; display: flex; gap: 10px; z-index: 10; }
         .tab-btn {
-            padding: 12px 35px; border-radius: 12px; border: none; background: transparent;
+            padding: 10px 25px; border-radius: 12px; border: none; background: transparent;
             color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: 0.3s; font-weight: bold;
         }
-        .tab-btn.active {
-            background: rgba(var(--prism-1-rgb), 0.2); color: var(--prism-1);
-            box-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.3);
-        }
-        .content-section { display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center; padding-top: 8vh; }
+        .tab-btn.active { background: rgba(var(--prism-1-rgb), 0.2); color: var(--prism-1); box-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.3); }
+        
+        .content-section { display: none; width: 100%; max-width: 1000px; flex-direction: column; align-items: center; padding: 5vh 20px; box-sizing: border-box; }
         .content-section.active { display: flex; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        h1 {
-            font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 950; margin: 0;
-            letter-spacing: 15px; text-indent: 15px;
-            background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 8s linear infinite;
-        }
+        
+        h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 950; margin: 0; letter-spacing: 15px; text-indent: 15px; background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 8s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
-        input {
-            width: 85%; max-width: 550px; padding: 22px; margin-top: 40px;
-            border-radius: 18px; border: 2px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.3rem;
-            backdrop-filter: blur(15px);
-        }
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; width: 90%; margin-top: 40px; }
-        .game-card {
-            background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1);
-            padding: 35px 20px; border-radius: 25px; text-align: center; cursor: pointer;
-            transition: 0.3s; color: #fff;
-        }
-        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-3); background: rgba(var(--prism-3-rgb), 0.1); }
-        .tag { font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        
+        input { width: 90%; max-width: 500px; padding: 20px; margin-top: 30px; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.1rem; }
+        
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; margin-top: 30px; }
+        .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px 15px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; color: #fff; }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .tag { font-size: 0.65rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         .tag-cloud { color: var(--prism-1); }
-        .tag-horror { color: #ff4d4d; }
+        .tag-portal { color: #aaa; }
+        h3 { margin: 0; font-size: 1.1rem; }
     </style>
 </head>
 <body>
@@ -67,22 +54,31 @@
 
     <section id="proxy-section" class="content-section active">
         <h1>PRISM</h1>
-        <input type="text" id="target" placeholder="URL or Keywords (via DuckDuckGo)" onkeydown="if(event.key==='Enter') navigate()">
+        <input type="text" id="target" placeholder="URL or Keywords" onkeydown="if(event.key==='Enter') navigate()">
     </section>
 
     <section id="games-section" class="content-section">
         <div class="game-grid">
             <div class="game-card" onclick="fastNav('https://nowgg.me/')">
-                <span class="tag tag-cloud">CLOUD GAMING</span>
-                <h3>now.gg</h3>
+                <span class="tag tag-cloud">CLOUD 1</span><h3>now.gg</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://x.bluestacks.com/')">
+                <span class="tag tag-cloud">CLOUD 2</span><h3>BlueStacks X</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://gamesnacks.com/')">
+                <span class="tag" style="color:#4285F4;">LIGHTWEIGHT</span><h3>GameSnacks</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://www.y8.com/')">
+                <span class="tag tag-portal">BIG PORTAL</span><h3>Y8 Games</h3>
+            </div>
+            <div class="game-card" onclick="fastNav('https://armorgames.com/')">
+                <span class="tag tag-portal">CLASSIC</span><h3>Armor Games</h3>
             </div>
             <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
-                <span class="tag tag-horror">HORROR</span>
-                <h3>FNaF Online</h3>
+                <span style="color:#ff4d4d;" class="tag">HORROR</span><h3>FNaF Online</h3>
             </div>
             <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
-                <span class="tag" style="color:gray;">PORTAL</span>
-                <h3>CrazyGames</h3>
+                <span class="tag tag-portal">STABLE</span><h3>CrazyGames</h3>
             </div>
         </div>
     </section>
@@ -91,18 +87,12 @@
         function switchTab(type) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            if(type === 'proxy') {
-                document.getElementById('btn-p').classList.add('active');
-                document.getElementById('proxy-section').classList.add('active');
-            } else {
-                document.getElementById('btn-g').classList.add('active');
-                document.getElementById('games-section').classList.add('active');
-            }
+            document.getElementById(type === 'proxy' ? 'btn-p' : 'btn-g').classList.add('active');
+            document.getElementById(type + '-section').classList.add('active');
         }
         function navigate() {
             const input = document.getElementById('target').value;
             if (!input) return;
-            // 検索エンジンはDuckDuckGoのまま（ブロック回避優先）
             let url = (input.includes('.') || input.startsWith('http')) ? (input.startsWith('http') ? input : 'https://' + input) : 'https://duckduckgo.com/?q=' + encodeURIComponent(input);
             fastNav(url);
         }

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRISM - Next Gen Portal</title>
     <style>
-        /* カラー設定 */
         :root {
             --prism-1: #00f2fe; --prism-1-rgb: 0, 242, 254;
             --prism-3: #7000ff; --prism-3-rgb: 112, 0, 255;
@@ -14,127 +13,80 @@
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #000; color: #fff; font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #000; color: #fff; font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
         }
 
-        /* --- 模様レイヤー --- */
-        /* 1. 基本の暗い背景 */
+        /* --- 修正した模様レイヤー --- */
         .prism-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(10, 10, 20, 0.9) 0%, #000 100%);
+            background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);
             z-index: -3;
         }
 
-        /* 2. 動くサイバーグリッド（ロゴの後ろの模様） */
+        /* 🆕 確実に見えるグリッド模様 */
         .bg-pattern {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(var(--prism-3-rgb), 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--prism-3-rgb), 0.1) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(500px) rotateX(60deg) translateY(-100px);
-            transform-origin: top;
-            animation: grid-move 12s linear infinite;
+                linear-gradient(rgba(var(--prism-3-rgb), 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--prism-3-rgb), 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            /* 角度を緩くして、画面全体を覆うように修正 */
+            transform: perspective(1000px) rotateX(45deg);
+            transform-origin: center;
+            animation: grid-move 10s linear infinite;
             z-index: -2;
+            opacity: 0.8;
         }
 
-        /* 3. 浮遊するネオンオーブ */
+        /* 浮遊する光 */
         .bg-glow-orb {
-            position: fixed; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(var(--prism-1-rgb), 0.12) 0%, transparent 70%);
-            top: 15%; left: 5%; filter: blur(60px);
-            animation: orb-float 18s ease-in-out infinite alternate;
-            z-index: -1;
-        }
-        .bg-glow-orb-2 {
-            position: fixed; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(var(--prism-5-rgb), 0.08) 0%, transparent 70%);
-            bottom: 5%; right: 2%; filter: blur(80px);
-            animation: orb-float 25s ease-in-out infinite alternate-reverse;
+            position: fixed; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(var(--prism-1-rgb), 0.2) 0%, transparent 70%);
+            top: 20%; left: -10%; filter: blur(60px);
+            animation: orb-float 15s ease-in-out infinite alternate;
             z-index: -1;
         }
 
-        @keyframes grid-move { from { background-position: 0 0; } to { background-position: 0 60px; } }
+        @keyframes grid-move { 
+            from { background-position: 0 0; } 
+            to { background-position: 0 40px; } 
+        }
         @keyframes orb-float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(120px, 60px) scale(1.1); }
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 50px); }
         }
 
-        /* --- UIパーツ --- */
-        .tab-container {
-            margin-top: 40px; display: flex; gap: 12px; z-index: 10;
-            background: rgba(255, 255, 255, 0.05); padding: 6px; border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-        }
+        /* --- UIパーツ（省略なし） --- */
+        .tab-container { margin-top: 40px; display: flex; gap: 10px; z-index: 10; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .tab-btn { padding: 12px 30px; border-radius: 10px; border: none; background: transparent; color: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .tab-btn.active { background: rgba(var(--prism-1-rgb), 0.2); color: var(--prism-1); box-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.3); }
 
-        .tab-btn {
-            padding: 12px 30px; border-radius: 12px; border: none; background: transparent;
-            color: rgba(255, 255, 255, 0.4); cursor: pointer; transition: 0.4s; font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .tab-btn.active {
-            background: rgba(var(--prism-1-rgb), 0.15); color: var(--prism-1);
-            box-shadow: 0 0 20px rgba(var(--prism-1-rgb), 0.25);
-        }
-
-        .content-section {
-            display: none; width: 100%; max-width: 1100px;
-            flex-direction: column; align-items: center; padding: 6vh 20px; box-sizing: border-box;
-        }
-
-        .content-section.active { display: flex; animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .content-section { display: none; width: 100%; max-width: 1000px; flex-direction: column; align-items: center; padding-top: 8vh; }
+        .content-section.active { display: flex; animation: fadeIn 0.5s ease; }
 
         h1 {
-            font-size: clamp(3.5rem, 15vw, 8rem); font-weight: 900; margin: 0;
-            letter-spacing: 20px; text-indent: 20px;
+            font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 950; margin: 0;
+            letter-spacing: 15px; text-indent: 15px;
             background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 6s linear infinite; position: relative;
+            animation: shine 8s linear infinite;
         }
-
         @keyframes shine { to { background-position: 200% center; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        input {
-            width: 90%; max-width: 550px; padding: 24px; margin-top: 50px;
-            border-radius: 20px; border: 2px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.5); color: #fff; text-align: center;
-            font-size: 1.3rem; backdrop-filter: blur(15px); outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--prism-1); box-shadow: 0 0 30px rgba(var(--prism-1-rgb), 0.2); }
+        input { width: 85%; max-width: 500px; padding: 22px; margin-top: 40px; border-radius: 18px; border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: #fff; text-align: center; font-size: 1.2rem; backdrop-filter: blur(10px); }
 
-        .game-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px; width: 100%; margin-top: 50px;
-        }
-
-        .game-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px 20px; border-radius: 28px; text-align: center; cursor: pointer;
-            transition: 0.4s; color: #fff; backdrop-filter: blur(8px);
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px); border-color: var(--prism-1);
-            background: rgba(var(--prism-1-rgb), 0.12);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-
-        .tag {
-            font-size: 0.75rem; font-weight: 800; margin-bottom: 10px;
-            display: block; letter-spacing: 2px; text-transform: uppercase;
-        }
-
-        h3 { margin: 0; font-size: 1.3rem; font-weight: 700; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; width: 90%; margin-top: 40px; }
+        .game-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 30px 15px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; color: #fff; backdrop-filter: blur(5px); }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.1); }
+        .tag { font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body>
     <div class="prism-bg"></div>
     <div class="bg-pattern"></div>
     <div class="bg-glow-orb"></div>
-    <div class="bg-glow-orb-2"></div>
 
     <div class="tab-container">
         <button id="btn-p" class="tab-btn active" onclick="switchTab('proxy')">PROXY</button>
@@ -148,59 +100,26 @@
 
     <section id="games-section" class="content-section">
         <div class="game-grid">
-            <div class="game-card" onclick="fastNav('https://nowgg.me/')">
-                <span class="tag" style="color:var(--prism-1)">CLOUD</span>
-                <h3>now.gg</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://www.1001games.com/')">
-                <span class="tag" style="color:#2ecc71">STABLE</span>
-                <h3>1001 Games</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
-                <span class="tag" style="color:#ff4d4d">HORROR</span>
-                <h3>FNaF Online</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
-                <span class="tag" style="color:#f39c12">PORTAL</span>
-                <h3>CrazyGames</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://gamesnacks.com/')">
-                <span class="tag" style="color:#4285F4">LIGHTWEIGHT</span>
-                <h3>GameSnacks</h3>
-            </div>
+            <div class="game-card" onclick="fastNav('https://nowgg.me/')"><span class="tag" style="color:var(--prism-1)">CLOUD</span><h3>now.gg</h3></div>
+            <div class="game-card" onclick="fastNav('https://www.1001games.com/')"><span class="tag" style="color:#2ecc71">STABLE</span><h3>1001 Games</h3></div>
+            <div class="game-card" onclick="fastNav('https://fnafonline.io/')"><span class="tag" style="color:#ff4d4d">HORROR</span><h3>FNaF Online</h3></div>
+            <div class="game-card" onclick="fastNav('https://www.crazygames.com')"><span class="tag" style="color:#f39c12">PORTAL</span><h3>CrazyGames</h3></div>
         </div>
     </section>
 
     <script>
-        // タブ切り替えロジック
         function switchTab(type) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            
-            if(type === 'proxy') {
-                document.getElementById('btn-p').classList.add('active');
-                document.getElementById('proxy-section').classList.add('active');
-            } else {
-                document.getElementById('btn-g').classList.add('active');
-                document.getElementById('games-section').classList.add('active');
-            }
+            document.getElementById(type === 'proxy' ? 'btn-p' : 'btn-g').classList.add('active');
+            document.getElementById(type + '-section').classList.add('active');
         }
-
-        // 検索・ナビゲーション
         function navigate() {
             const input = document.getElementById('target').value;
             if (!input) return;
-            
-            let url;
-            if (input.includes('.') || input.startsWith('http')) {
-                url = input.startsWith('http') ? input : 'https://' + input;
-            } else {
-                url = 'https://duckduckgo.com/?q=' + encodeURIComponent(input);
-            }
+            let url = (input.includes('.') || input.startsWith('http')) ? (input.startsWith('http') ? input : 'https://' + input) : 'https://duckduckgo.com/?q=' + encodeURIComponent(input);
             fastNav(url);
         }
-
-        // プロキシ経由で移動
         function fastNav(url) {
             window.location.href = '/api/proxy?url=' + encodeURIComponent(url);
         }

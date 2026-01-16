@@ -10,44 +10,88 @@
             --prism-3: #7000ff; --prism-3-rgb: 112, 0, 255;
             --prism-5: #ff00c8; --prism-5-rgb: 255, 0, 200;
         }
+
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #000; color: #fff; font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+            display: flex; flex-direction: column; align-items: center; overflow: hidden;
         }
-        .prism-bg {
+
+        /* 🆕 模様レイヤー1: 動くグリッドライン */
+        .bg-pattern {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(10, 10, 20, 0.8) 0%, #000 100%);
+            background-image: 
+                linear-gradient(rgba(var(--prism-3-rgb), 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--prism-3-rgb), 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px);
+            transform-origin: top;
+            animation: grid-move 10s linear infinite;
             z-index: -1;
         }
-        .tab-container { margin-top: 30px; display: flex; gap: 10px; z-index: 10; }
-        .tab-btn {
-            padding: 10px 25px; border-radius: 12px; border: none; background: transparent;
-            color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: 0.3s; font-weight: bold;
+
+        /* 🆕 模様レイヤー2: ネオンの光の粒（浮遊エフェクト） */
+        .bg-glow-orb {
+            position: fixed; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(var(--prism-1-rgb), 0.15) 0%, transparent 70%);
+            top: 20%; left: 10%; filter: blur(50px);
+            animation: orb-float 15s ease-in-out infinite alternate;
+            z-index: -1;
         }
+        .bg-glow-orb-2 {
+            position: fixed; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(var(--prism-5-rgb), 0.1) 0%, transparent 70%);
+            bottom: 10%; right: 5%; filter: blur(60px);
+            animation: orb-float 20s ease-in-out infinite alternate-reverse;
+            z-index: -1;
+        }
+
+        @keyframes grid-move { from { background-position: 0 0; } to { background-position: 0 50px; } }
+        @keyframes orb-float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.2); }
+        }
+
+        /* 既存のレイヤー */
+        .prism-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(10, 10, 20, 0.9) 0%, #000 100%);
+            z-index: -2;
+        }
+
+        .tab-container { margin-top: 30px; display: flex; gap: 10px; z-index: 10; position: relative; }
+        .tab-btn { padding: 10px 25px; border-radius: 12px; border: none; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; font-weight: bold; }
         .tab-btn.active { background: rgba(var(--prism-1-rgb), 0.2); color: var(--prism-1); box-shadow: 0 0 15px rgba(var(--prism-1-rgb), 0.3); }
-        
-        .content-section { display: none; width: 100%; max-width: 1000px; flex-direction: column; align-items: center; padding: 5vh 20px; box-sizing: border-box; }
+
+        .content-section { display: none; width: 100%; max-width: 1000px; flex-direction: column; align-items: center; padding: 5vh 20px; box-sizing: border-box; z-index: 1; }
         .content-section.active { display: flex; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 950; margin: 0; letter-spacing: 15px; text-indent: 15px; background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 8s linear infinite; }
+
+        h1 {
+            font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 950; margin: 0;
+            letter-spacing: 15px; text-indent: 15px;
+            background: linear-gradient(to right, #fff, var(--prism-1), var(--prism-3), var(--prism-5), #fff);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 8s linear infinite;
+            position: relative;
+        }
+
         @keyframes shine { to { background-position: 200% center; } }
-        
-        input { width: 90%; max-width: 500px; padding: 20px; margin-top: 30px; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; text-align: center; font-size: 1.1rem; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--prism-1); box-shadow: 0 0 20px rgba(var(--prism-1-rgb), 0.2); }
-        
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; margin-top: 30px; }
-        .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px 15px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; color: #fff; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.1); }
-        .tag { font-size: 0.65rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 1px; }
-        .tag-cloud { color: var(--prism-1); }
-        .tag-alt { color: #f39c12; }
-        h3 { margin: 0; font-size: 1.1rem; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        input { width: 90%; max-width: 500px; padding: 22px; margin-top: 40px; border-radius: 18px; border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: #fff; text-align: center; font-size: 1.2rem; backdrop-filter: blur(10px); }
+
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; width: 100%; margin-top: 40px; }
+        .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 35px 20px; border-radius: 25px; text-align: center; cursor: pointer; transition: 0.3s; color: #fff; backdrop-filter: blur(5px); }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--prism-1); background: rgba(var(--prism-1-rgb), 0.15); }
+        .tag { font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; display: block; letter-spacing: 1.5px; }
     </style>
 </head>
 <body>
     <div class="prism-bg"></div>
+    <div class="bg-pattern"></div>
+    <div class="bg-glow-orb"></div>
+    <div class="bg-glow-orb-2"></div>
+
     <div class="tab-container">
         <button id="btn-p" class="tab-btn active" onclick="switchTab('proxy')">PROXY</button>
         <button id="btn-g" class="tab-btn" onclick="switchTab('games')">GAMES</button>
@@ -55,32 +99,15 @@
 
     <section id="proxy-section" class="content-section active">
         <h1>PRISM</h1>
-        <input type="text" id="target" placeholder="URL or Keywords (via DuckDuckGo)" onkeydown="if(event.key==='Enter') navigate()">
+        <input type="text" id="target" placeholder="URL or Keywords" onkeydown="if(event.key==='Enter') navigate()">
     </section>
 
     <section id="games-section" class="content-section">
         <div class="game-grid">
-            <div class="game-card" onclick="fastNav('https://nowgg.me/')">
-                <span class="tag tag-cloud">CLOUD 1</span><h3>now.gg</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://www.blooket.com/')">
-                <span class="tag tag-alt">QUIZ GAME</span><h3>Blooket</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://www.1001games.com/')">
-                <span class="tag" style="color:#2ecc71;">STABLE</span><h3>1001 Games</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://gamesnacks.com/')">
-                <span class="tag" style="color:#4285F4;">LIGHTWEIGHT</span><h3>GameSnacks</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://www.y8.com/')">
-                <span class="tag" style="color:#aaa;">BIG PORTAL</span><h3>Y8 Games</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://fnafonline.io/')">
-                <span style="color:#ff4d4d;" class="tag">HORROR</span><h3>FNaF Online</h3>
-            </div>
-            <div class="game-card" onclick="fastNav('https://www.crazygames.com')">
-                <span class="tag" style="color:#aaa;">CLASSIC</span><h3>CrazyGames</h3>
-            </div>
+            <div class="game-card" onclick="fastNav('https://nowgg.me/')"><span class="tag" style="color:var(--prism-1)">CLOUD</span><h3>now.gg</h3></div>
+            <div class="game-card" onclick="fastNav('https://www.1001games.com/')"><span class="tag" style="color:#2ecc71">STABLE</span><h3>1001 Games</h3></div>
+            <div class="game-card" onclick="fastNav('https://fnafonline.io/')"><span class="tag" style="color:#ff4d4d">HORROR</span><h3>FNaF Online</h3></div>
+            <div class="game-card" onclick="fastNav('https://www.crazygames.com')"><span class="tag" style="color:#aaa">PORTAL</span><h3>CrazyGames</h3></div>
         </div>
     </section>
 

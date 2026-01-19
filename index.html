@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRISM - Plasma Cyan Edition</title>
+    <title>PRISM - Plasma Edition</title>
     <style>
-        :root { --p-cyan: #00ffff; --p-white: #ffffff; --p3: #7000ff; }
+        :root { --p-plasma: #ffffff; --p-glow: rgba(255, 255, 255, 0.8); }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: #000; color: #fff; font-family: sans-serif;
@@ -15,22 +15,23 @@
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background: #000; }
 
         .container-fixed {
-            position: relative; z-index: 10;
-            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
-            background: transparent !important;
+            position: relative; z-index: 10; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; background: transparent !important;
         }
 
-        /* UIは使いやすく、でも背景の邪魔をしないスケスケ設定 */
         .tab-container {
-            margin-top: 30px; display: flex; gap: 10px;
-            background: rgba(255,255,255,0.05); padding: 8px; border-radius: 15px;
-            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 35px; display: flex; gap: 10px;
+            background: rgba(255,255,255,0.08); padding: 8px; border-radius: 15px;
+            backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2);
         }
         .tab-btn {
             padding: 10px 25px; border-radius: 10px; border: none; background: transparent;
-            color: #fff; cursor: pointer; font-weight: bold; opacity: 0.4;
+            color: #fff; cursor: pointer; font-weight: bold; opacity: 0.3; transition: 0.3s;
         }
-        .tab-btn.active { background: var(--p-cyan); color: #000; opacity: 1; box-shadow: 0 0 20px var(--p-cyan); }
+        .tab-btn.active { 
+            background: var(--p-plasma); color: #000; opacity: 1; 
+            box-shadow: 0 0 25px var(--p-glow);
+        }
 
         .content-section {
             display: none; width: 100%; flex-direction: column; align-items: center;
@@ -39,28 +40,28 @@
         .content-section.active { display: flex; }
 
         h1 {
-            font-size: clamp(3.5rem, 15vw, 7rem); font-weight: 950;
-            background: linear-gradient(to right, #fff, var(--p-cyan), #fff);
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite; margin: 0;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+            font-size: clamp(3.5rem, 15vw, 7.5rem); font-weight: 950;
+            color: #fff; margin: 0; letter-spacing: 15px; text-indent: 15px;
+            /* プラズマらしい強力な発光効果 */
+            text-shadow: 0 0 20px var(--p-glow), 0 0 40px rgba(255,255,255,0.3);
         }
-        @keyframes shine { to { background-position: 200% center; } }
 
         input {
             width: 80%; max-width: 450px; padding: 22px; margin-top: 40px;
-            border-radius: 20px; border: 2px solid var(--p-cyan);
-            background: rgba(0,0,0,0.7); color: #fff; text-align: center; font-size: 1.3rem;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); outline: none;
+            border-radius: 20px; border: 2px solid rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.8); color: #fff; text-align: center; font-size: 1.3rem;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); outline: none;
+            transition: 0.3s;
         }
+        input:focus { border-color: #fff; box-shadow: 0 0 25px var(--p-glow); }
 
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 90%; max-width: 500px; margin-top: 30px; }
         .game-card {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
             padding: 30px 10px; border-radius: 20px; text-align: center; cursor: pointer;
-            font-weight: bold; backdrop-filter: blur(4px); transition: 0.3s;
+            font-weight: bold; backdrop-filter: blur(5px); transition: 0.3s;
         }
-        .game-card:hover { border-color: var(--p-cyan); background: rgba(0, 255, 255, 0.1); }
+        .game-card:hover { border-color: #fff; background: rgba(255, 255, 255, 0.1); transform: translateY(-5px); }
     </style>
 </head>
 <body>
@@ -74,7 +75,7 @@
 
         <section id="proxy-section" class="content-section active">
             <h1>PRISM</h1>
-            <input type="text" id="target" placeholder="Google Search" onkeydown="if(event.key==='Enter') navigate()">
+            <input type="text" id="target" placeholder="Search Google" onkeydown="if(event.key==='Enter') navigate()">
         </section>
 
         <section id="games-section" class="content-section">
@@ -93,7 +94,7 @@
         let angle = 0;
 
         function project(x, y, z) {
-            const scale = 350; // 立体を少し大きくしたよ
+            const scale = 380; // 少し大きく迫力を出したよ
             const p = 800 / (800 + z);
             return { x: x * p * scale + canvas.width / 2, y: y * p * scale + canvas.height / 2 };
         }
@@ -104,9 +105,8 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const morph = (Math.sin(Date.now() * 0.001) + 1) / 2;
-            angle += 0.008;
+            angle += 0.007;
 
-            // 頂点の定義
             const vertices = [
                 {x: 0, y: -1, z: 0}, {x: 0, y: 1, z: 0},
                 {x: 1, y: 0, z: 0}, {x: -1, y: 0, z: 0},
@@ -118,15 +118,15 @@
                 let z = v.y * Math.sin(angle) + v.z * Math.cos(angle);
                 let x = v.x * Math.cos(angle) + z * Math.sin(angle);
                 z = -v.x * Math.sin(angle) + z * Math.cos(angle);
-                const f = 1 + morph * 0.6;
+                const f = 1 + morph * 0.65;
                 return project(x * f, y * f, z * f);
             });
 
-            // 🆕 多角形の発光設定（プラズマホワイト ✕ ネオンシアン）
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#ffffff'; // 芯の部分はプラズマホワイト
-            ctx.shadowColor = '#00ffff'; // 外側に広がる光はネオンシアン
-            ctx.shadowBlur = 20;         // 光の強さ
+            // 🆕 純白のプラズマ・エフェクト
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#ffffff';
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 25; // 眩しいくらいに発光！
 
             for(let i=0; i<rotated.length; i++) {
                 for(let j=i+1; j<rotated.length; j++) {
@@ -136,7 +136,6 @@
                     ctx.stroke();
                 }
             }
-
             requestAnimationFrame(draw);
         }
         draw();

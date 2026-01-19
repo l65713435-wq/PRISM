@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRISM - Pink Edition</title>
+    <title>PRISM - Dynamic Edition</title>
     <style>
         :root { --p-plasma: #ffffff; --p-glow: rgba(255, 255, 255, 0.8); }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background: #000; }
         .container-fixed { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; background: transparent !important; }
 
-        /* 🆕 ロゴをピンク単体に設定 */
+        /* 🆕 ロゴの色がアニメーションで変化 */
         h1 {
             font-size: clamp(3.5rem, 15vw, 7.5rem); font-weight: 950;
-            color: #ff007f; margin: 0; letter-spacing: 15px; text-indent: 15px;
-            text-shadow: 0 0 15px #ff007f, 0 0 30px rgba(255, 0, 127, 0.5);
+            margin: 0; letter-spacing: 15px; text-indent: 15px;
+            animation: colorCycle 8s infinite alternate;
+        }
+        @keyframes colorCycle {
+            0% { color: #0080ff; text-shadow: 0 0 20px #0080ff; }
+            33% { color: #ffff00; text-shadow: 0 0 20px #ffff00; }
+            66% { color: #ff007f; text-shadow: 0 0 20px #ff007f; }
+            100% { color: #00ff80; text-shadow: 0 0 20px #00ff80; }
         }
 
         .tab-container { margin-top: 35px; display: flex; gap: 10px; background: rgba(255,255,255,0.08); padding: 8px; border-radius: 15px; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); }

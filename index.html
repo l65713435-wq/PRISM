@@ -3,34 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRISM - Dynamic Edition</title>
+    <title>PRISM - Ice Tech Edition</title>
     <style>
-        :root { --p-plasma: #ffffff; --p-glow: rgba(255, 255, 255, 0.8); }
+        :root { 
+            --p-plasma: #ffffff; 
+            --p-blue: #00bfff; /* 君の選んだディープスカイブルー */
+            --p-glow: rgba(255, 255, 255, 0.8); 
+        }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background: #000; }
         .container-fixed { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; background: transparent !important; }
 
-        /* 🆕 ロゴの色がアニメーションで変化 */
+        /* 🆕 ロゴをディープスカイブルーに設定 */
         h1 {
             font-size: clamp(3.5rem, 15vw, 7.5rem); font-weight: 950;
-            margin: 0; letter-spacing: 15px; text-indent: 15px;
-            animation: colorCycle 8s infinite alternate;
-        }
-        @keyframes colorCycle {
-            0% { color: #0080ff; text-shadow: 0 0 20px #0080ff; }
-            33% { color: #ffff00; text-shadow: 0 0 20px #ffff00; }
-            66% { color: #ff007f; text-shadow: 0 0 20px #ff007f; }
-            100% { color: #00ff80; text-shadow: 0 0 20px #00ff80; }
+            color: var(--p-blue); margin: 0; letter-spacing: 15px; text-indent: 15px;
+            /* 青い強力な発光効果 */
+            text-shadow: 0 0 15px var(--p-blue), 0 0 30px rgba(0, 191, 255, 0.5);
         }
 
         .tab-container { margin-top: 35px; display: flex; gap: 10px; background: rgba(255,255,255,0.08); padding: 8px; border-radius: 15px; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); }
         .tab-btn { padding: 10px 25px; border-radius: 10px; border: none; background: transparent; color: #fff; cursor: pointer; font-weight: bold; opacity: 0.3; transition: 0.3s; }
-        .tab-btn.active { background: #fff; color: #000; opacity: 1; box-shadow: 0 0 20px #fff; }
+        .tab-btn.active { background: var(--p-blue); color: #000; opacity: 1; box-shadow: 0 0 20px var(--p-blue); }
+
         .content-section { display: none; width: 100%; flex-direction: column; align-items: center; justify-content: center; height: 75vh; }
         .content-section.active { display: flex; }
-        input { width: 80%; max-width: 450px; padding: 22px; margin-top: 40px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.8); color: #fff; text-align: center; font-size: 1.3rem; outline: none; }
+        
+        input { 
+            width: 80%; max-width: 450px; padding: 22px; margin-top: 40px; 
+            border-radius: 20px; border: 2px solid var(--p-blue); 
+            background: rgba(0,0,0,0.8); color: #fff; text-align: center; 
+            font-size: 1.3rem; outline: none;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+        }
+        
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 90%; max-width: 500px; margin-top: 30px; }
-        .game-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); padding: 30px 10px; border-radius: 20px; text-align: center; cursor: pointer; font-weight: bold; }
+        .game-card { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); 
+            padding: 30px 10px; border-radius: 20px; text-align: center; 
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .game-card:hover { border-color: var(--p-blue); background: rgba(0, 191, 255, 0.1); }
     </style>
 </head>
 <body>

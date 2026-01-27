@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google</title>
     <style>
-        :root {
-            --google-blue: #1a73e8;
-        }
+        :root { --google-blue: #1a73e8; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'arial', sans-serif; overflow: hidden; background: #fff; }
 
-        /* 完璧なGoogleカモフラージュ */
+        /* 完璧なGoogle偽装 */
         .google-home { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
         header { position: absolute; top: 0; right: 0; padding: 15px; display: flex; gap: 15px; align-items: center; }
         .nav-link { color: rgba(0,0,0,0.87); text-decoration: none; font-size: 13px; cursor: pointer; }
-        .login-btn { 
-            background: var(--google-blue); color: #fff; padding: 9px 23px; 
-            border-radius: 4px; font-weight: 500; font-size: 14px; text-decoration: none;
-        }
+        .login-btn { background: var(--google-blue); color: #fff; padding: 9px 23px; border-radius: 4px; font-weight: 500; font-size: 14px; text-decoration: none; }
 
         .g-logo { font-size: 90px; font-weight: 500; margin-bottom: 25px; letter-spacing: -3px; user-select: none; }
         .g-logo span:nth-child(1) { color: #4285f4; } .g-logo span:nth-child(2) { color: #ea4335; }
@@ -25,31 +20,21 @@
         .g-logo span:nth-child(5) { color: #34a853; } .g-logo span:nth-child(6) { color: #ea4335; }
 
         .search-container { width: 90%; max-width: 584px; display: flex; flex-direction: column; align-items: center; }
-        .search-box {
-            width: 100%; border: 1px solid #dfe1e5; padding: 12px 20px; 
-            border-radius: 24px; display: flex; align-items: center; box-sizing: border-box;
-        }
+        .search-box { width: 100%; border: 1px solid #dfe1e5; padding: 12px 20px; border-radius: 24px; display: flex; align-items: center; box-sizing: border-box; }
         .search-box:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.28); }
         .search-box input { border: none; outline: none; width: 100%; font-size: 16px; }
 
         .btn-group { margin-top: 25px; display: flex; gap: 10px; }
         .g-btn { background: #f8f9fa; border: 1px solid #f8f9fa; color: #3c4043; padding: 0 16px; line-height: 34px; height: 36px; border-radius: 4px; font-size: 14px; cursor: pointer; }
-        .g-btn:hover { border: 1px solid #dadce0; color: #202124; box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
-
     <div class="google-home">
         <header>
-            <span class="nav-link">Gmail</span>
-            <span class="nav-link">画像</span>
+            <span class="nav-link">Gmail</span><span class="nav-link">画像</span>
             <a href="https://accounts.google.com/ServiceLogin" class="login-btn">ログイン</a>
         </header>
-
-        <div class="g-logo">
-            <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
-        </div>
-
+        <div class="g-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
         <div class="search-container">
             <div class="search-box">
                 <input type="text" id="target" placeholder="Google で検索または URL を入力" onkeydown="if(event.key==='Enter') launch()">
@@ -65,21 +50,14 @@
         function launch() {
             const val = document.getElementById('target').value;
             if (!val) return;
-
             let url = val;
-            // URLか検索キーワードかを判定
             if (!url.includes('.') || url.includes(' ')) {
-                // キーワードならプロキシ経由でGoogle検索
                 url = 'https://www.google.com/search?q=' + encodeURIComponent(val);
-            } else {
-                // URLなら整形
-                if (!url.startsWith('http')) url = 'https://' + url;
+            } else if (!url.startsWith('http')) {
+                url = 'https://' + url;
             }
-
-            // 最も安定している公開プロキシゲートウェイを直結
-            // もしブロックされたらここを別のプロキシURLに変えればOK
-            const gateway = "https://www.croxyproxy.com/_jp/gateway?url=";
-            window.location.href = gateway + encodeURIComponent(url);
+            // 🚀 このサイト自身(/api/proxy)を経由させる！
+            window.location.href = '/api/proxy?url=' + encodeURIComponent(url);
         }
     </script>
 </body>

@@ -1,21 +1,23 @@
-export default async (request) => {
-  const url = new URL(request.url);
-  const target = url.searchParams.get("url");
+export default async function handler(req, res) {
+  const { url } = req.query;
 
-  // /proxy というURLにアクセスされた時だけ動くよ
-  if (!target || !url.pathname.startsWith("/proxy")) return;
+  if (!url) {
+    return res.status(400).send("URLを指定してください。");
+  }
 
   try {
-    // Netlifyのサーバーが代わりにターゲットのサイトを読みに行く
-    const response = await fetch(target, {
-      headers: { "User-Agent": request.headers.get("user-agent") }
+    // Vercelのサーバーが代わりにサイトを読みに行く
+    const response = await fetch(decodeURIComponent(url), {
+      headers: { "User-Agent": "Mozilla/5.0" }
     });
 
-    // 読み込んだ中身（HTMLとか画像とか）をそのまま君のブラウザに返す
-    return new Response(response.body, {
-      headers: response.headers
-    });
+    const contentType = response.headers.get("content-type");
+    res.setHeader("Content-Type", contentType);
+
+    // 読み込んだデータをそのままブラウザに送る
+    const buffer = await response.arrayBuffer();
+    res.send(Buffer.from(buffer));
   } catch (e) {
-    return new Response("エラー: サイトを読み込めませんでした。", { status: 500 });
+    res.status(500).send("エラー: サイトを読み込めませんでした。");
   }
-};
+}

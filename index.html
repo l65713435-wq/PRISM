@@ -7,12 +7,12 @@
     <style>
         :root {
             --google-blue: #1a73e8;
-            --p-gold: #c0b283; /* 裏のPRISMカラー */
+            --p-gold: #c0b283; /* 君が選んだシャンパンゴールド */
             --bg-dark: #0f0f0f;
         }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'arial', sans-serif; overflow: hidden; }
 
-        /* --- 【表の顔】Googleスタイル --- */
+        /* --- 【表】Google偽装画面 --- */
         .google-home {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; background: #fff; transition: opacity 0.4s ease;
@@ -22,23 +22,23 @@
         .login-btn { 
             background: var(--google-blue); color: #fff; padding: 9px 23px; 
             border-radius: 4px; font-weight: 500; font-size: 14px; transition: 0.2s;
+            border: none; cursor: pointer; outline: none;
         }
         .login-btn:hover { background: #185abc; box-shadow: 0 1px 3px rgba(60,64,67,0.3); }
 
-        .g-logo { font-size: 90px; font-weight: 500; margin-bottom: 25px; letter-spacing: -3px; }
+        .g-logo { font-size: 90px; font-weight: 500; margin-bottom: 25px; letter-spacing: -3px; user-select: none; }
         .g-logo span:nth-child(1) { color: #4285f4; } .g-logo span:nth-child(2) { color: #ea4335; }
         .g-logo span:nth-child(3) { color: #fbbc05; } .g-logo span:nth-child(4) { color: #4285f4; }
         .g-logo span:nth-child(5) { color: #34a853; } .g-logo span:nth-child(6) { color: #ea4335; }
 
-        .search-container { width: 90%; max-width: 584px; position: relative; }
         .search-box {
-            width: 100%; border: 1px solid #dfe1e5; padding: 12px 20px; 
+            width: 90%; max-width: 584px; border: 1px solid #dfe1e5; padding: 12px 20px; 
             border-radius: 24px; display: flex; align-items: center; box-sizing: border-box;
         }
-        .search-box:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.28); border-color: transparent; }
+        .search-box:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.28); }
         .search-box input { border: none; outline: none; width: 100%; font-size: 16px; }
 
-        /* --- 【裏の顔】PRISM機能画面 --- */
+        /* --- 【裏】PRISM多機能ポータル --- */
         #prism-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); display: none; z-index: 1000;
@@ -47,13 +47,11 @@
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .prism-header { margin-top: 60px; text-align: center; }
         .prism-logo { 
             font-size: 4rem; font-weight: 950; color: var(--p-gold); 
             letter-spacing: 12px; text-shadow: 0 0 15px rgba(192, 178, 131, 0.4); 
-            margin-bottom: 10px;
+            margin: 60px 0 10px 0;
         }
-        .prism-subtitle { opacity: 0.6; letter-spacing: 2px; font-size: 0.9rem; }
 
         .menu-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
@@ -69,62 +67,57 @@
             transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .menu-card h3 { color: var(--p-gold); margin: 0 0 10px 0; font-size: 1.5rem; }
-        .menu-card p { margin: 0; font-size: 0.85rem; opacity: 0.7; line-height: 1.4; }
+        .menu-card p { margin: 0; font-size: 0.85rem; opacity: 0.7; }
 
         .back-btn {
-            margin-top: 60px; padding: 10px 20px; color: #555; cursor: pointer;
+            margin-top: 60px; padding: 10px 25px; color: #555; cursor: pointer;
             font-size: 14px; border: 1px solid #333; border-radius: 30px; transition: 0.3s;
         }
-        .back-btn:hover { color: #888; border-color: #555; }
+        .back-btn:hover { color: #888; border-color: #555; background: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
     <div class="google-home" id="google-ui">
         <header>
-            <a class="nav-link">Gmail</a>
-            <a class="nav-link">画像</a>
-            <div class="nav-link login-btn" onclick="openPrism()">ログイン</div>
+            <span class="nav-link">Gmail</span>
+            <span class="nav-link">画像</span>
+            <button class="login-btn" onclick="openPrism()">ログイン</button>
         </header>
-        
         <div class="g-logo">
             <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
         </div>
-
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" placeholder="Google で検索または URL を入力" onkeydown="if(event.key==='Enter') doSearch()">
-            </div>
+        <div class="search-box">
+            <input type="text" placeholder="Google で検索または URL を入力" onkeydown="if(event.key==='Enter') doSearch()">
         </div>
     </div>
 
     <div id="prism-overlay">
-        <div class="prism-header">
-            <div class="prism-logo">PRISM</div>
-            <div class="prism-subtitle">SYSTEM CORE ACTIVATED</div>
-        </div>
+        <div class="prism-logo">PRISM</div>
+        <p style="opacity: 0.5; letter-spacing: 2px;">SECURE ACCESS GRANTED</p>
 
         <div class="menu-grid">
-            <div class="menu-card" onclick="runFunc('YouTube Downloader')">
+            <div class="menu-card" onclick="runFunc('DL VIDEO')">
                 <h3>DL VIDEO</h3>
-                <p>YouTubeの動画を高画質で<br>保存・抽出します</p>
+                <p>YouTubeなどの動画を<br>保存可能なサイトへ</p>
             </div>
 
-            <div class="menu-card" onclick="runFunc('Game Portal')">
+            <div class="menu-card" onclick="runFunc('GAMES')">
                 <h3>GAMES</h3>
-                <p>制限を回避して最新の<br>WEBゲームをプレイ</p>
+                <p>制限を回避して遊べる<br>ゲームプラットフォーム</p>
             </div>
 
-            <div class="menu-card" onclick="runFunc('Proxy Browser')">
+            <div class="menu-card" onclick="runFunc('PROXY')">
                 <h3>PROXY</h3>
-                <p>匿名サーバー経由で<br>自由にウェブを閲覧</p>
+                <p>匿名でウェブを閲覧できる<br>検索エンジンへ</p>
             </div>
         </div>
 
-        <div class="back-btn" onclick="closePrism()">Googleに戻る</div>
+        <div class="back-btn" onclick="closePrism()">Google に戻る</div>
     </div>
 
     <script>
+        // 画面の切り替え
         function openPrism() {
             document.getElementById('prism-overlay').style.display = 'flex';
             document.getElementById('google-ui').style.opacity = '0';
@@ -135,12 +128,22 @@
             document.getElementById('google-ui').style.opacity = '1';
         }
 
-        function runFunc(name) {
-            alert(name + " 機能を起動します。\n(ここにプロキシエンジンやDLサイトのURLをリンクさせてね！)");
+        // 実際の機能実行
+        function runFunc(type) {
+            if (type === 'DL VIDEO') {
+                // 有名な動画ダウンロード支援サイトへ
+                window.location.href = 'https://y2mate.is/'; 
+            } else if (type === 'GAMES') {
+                // 制限回避で定評のあるゲームサイトへ
+                window.location.href = 'https://nowgg.me/';
+            } else if (type === 'PROXY') {
+                // プロキシ検索サイトへ（必要に応じてUltravioletサーバーURL等に変更可）
+                window.location.href = 'https://www.google.com/search?q=free+web+proxy+list';
+            }
         }
 
         function doSearch() {
-            alert("通常のGoogle検索を実行します。");
+            alert("通常の Google 検索（偽装）を実行中...");
         }
     </script>
 </body>

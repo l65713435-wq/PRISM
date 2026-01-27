@@ -7,22 +7,16 @@
     <style>
         :root {
             --google-blue: #1a73e8;
-            --p-gold: #c0b283;
-            --bg-dark: #0f0f0f;
         }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'arial', sans-serif; overflow: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'arial', sans-serif; overflow: hidden; background: #fff; }
 
-        /* --- 【表】Google偽装画面 --- */
-        .google-home {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; background: #fff; transition: opacity 0.4s ease;
-        }
+        /* 完璧なGoogleカモフラージュ */
+        .google-home { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
         header { position: absolute; top: 0; right: 0; padding: 15px; display: flex; gap: 15px; align-items: center; }
         .nav-link { color: rgba(0,0,0,0.87); text-decoration: none; font-size: 13px; cursor: pointer; }
         .login-btn { 
             background: var(--google-blue); color: #fff; padding: 9px 23px; 
-            border-radius: 4px; font-weight: 500; font-size: 14px; transition: 0.2s;
-            border: none; cursor: pointer; outline: none;
+            border-radius: 4px; font-weight: 500; font-size: 14px; text-decoration: none;
         }
 
         .g-logo { font-size: 90px; font-weight: 500; margin-bottom: 25px; letter-spacing: -3px; user-select: none; }
@@ -39,78 +33,54 @@
         .search-box input { border: none; outline: none; width: 100%; font-size: 16px; }
 
         .btn-group { margin-top: 25px; display: flex; gap: 10px; }
-        .g-btn { 
-            background: #f8f9fa; border: 1px solid #f8f9fa; color: #3c4043;
-            padding: 0 16px; line-height: 34px; height: 36px; min-width: 54px;
-            text-align: center; cursor: pointer; border-radius: 4px; font-size: 14px;
-        }
-        .g-btn:hover { border: 1px solid #dadce0; color: #202124; }
-
-        /* --- 【裏】PRISM機能（オプション用） --- */
-        #prism-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); display: none; z-index: 1000;
-            flex-direction: column; align-items: center; color: #fff;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .prism-logo { font-size: 4rem; font-weight: 950; color: var(--p-gold); letter-spacing: 12px; margin-top: 60px; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 80%; margin-top: 40px; }
-        .menu-card { background: rgba(255,255,255,0.05); border: 1px solid var(--p-gold); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; }
+        .g-btn { background: #f8f9fa; border: 1px solid #f8f9fa; color: #3c4043; padding: 0 16px; line-height: 34px; height: 36px; border-radius: 4px; font-size: 14px; cursor: pointer; }
+        .g-btn:hover { border: 1px solid #dadce0; color: #202124; box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-    <div class="google-home" id="google-ui">
+    <div class="google-home">
         <header>
-            <span class="nav-link">Gmail</span><span class="nav-link">画像</span>
-            <button class="login-btn" onclick="openPrism()">ログイン</button>
+            <span class="nav-link">Gmail</span>
+            <span class="nav-link">画像</span>
+            <a href="https://accounts.google.com/ServiceLogin" class="login-btn">ログイン</a>
         </header>
-        <div class="g-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
+
+        <div class="g-logo">
+            <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+        </div>
+
         <div class="search-container">
             <div class="search-box">
-                <input type="text" id="proxy-input" placeholder="URLを入力してプロキシで閲覧..." onkeydown="if(event.key==='Enter') launchProxy()">
+                <input type="text" id="target" placeholder="Google で検索または URL を入力" onkeydown="if(event.key==='Enter') launch()">
             </div>
             <div class="btn-group">
-                <div class="g-btn" onclick="launchProxy()">Google 検索</div>
-                <div class="g-btn" onclick="launchProxy()">I'm Feeling Lucky</div>
+                <div class="g-btn" onclick="launch()">Google 検索</div>
+                <div class="g-btn" onclick="launch()">I'm Feeling Lucky</div>
             </div>
         </div>
-    </div>
-
-    <div id="prism-overlay">
-        <div class="prism-logo">PRISM</div>
-        <div class="menu-grid">
-            <div class="menu-card" onclick="setDest('https://youtube.com')"><h3>YouTube</h3></div>
-            <div class="menu-card" onclick="setDest('https://discord.com')"><h3>Discord</h3></div>
-            <div class="menu-card" onclick="setDest('https://nowgg.me')"><h3>Games</h3></div>
-        </div>
-        <div style="margin-top: 40px; color: #555; cursor: pointer;" onclick="closePrism()">Googleに戻る</div>
     </div>
 
     <script>
-        // プロキシ実行のメイン関数
-        function launchProxy() {
-            const input = document.getElementById('proxy-input').value;
-            if (!input) return;
+        function launch() {
+            const val = document.getElementById('target').value;
+            if (!val) return;
 
-            let url = input;
-            // URL形式でない場合はGoogle検索として処理
+            let url = val;
+            // URLか検索キーワードかを判定
             if (!url.includes('.') || url.includes(' ')) {
-                url = 'https://www.google.com/search?q=' + encodeURIComponent(input);
-            } else if (!url.startsWith('http')) {
-                url = 'https://' + url;
+                // キーワードならプロキシ経由でGoogle検索
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(val);
+            } else {
+                // URLなら整形
+                if (!url.startsWith('http')) url = 'https://' + url;
             }
 
-            // 公開プロキシゲートウェイを経由させてブロックを回避
-            const proxyGate = "https://www.croxyproxy.com/_jp/gateway?url=";
-            window.location.href = proxyGate + encodeURIComponent(url);
+            // 最も安定している公開プロキシゲートウェイを直結
+            // もしブロックされたらここを別のプロキシURLに変えればOK
+            const gateway = "https://www.croxyproxy.com/_jp/gateway?url=";
+            window.location.href = gateway + encodeURIComponent(url);
         }
-
-        // 秘密のメニュー用
-        function openPrism() { document.getElementById('prism-overlay').style.display = 'flex'; document.getElementById('google-ui').style.opacity = '0'; }
-        function closePrism() { document.getElementById('prism-overlay').style.display = 'none'; document.getElementById('google-ui').style.opacity = '1'; }
-        function setDest(target) { document.getElementById('proxy-input').value = target; launchProxy(); }
     </script>
 </body>
 </html>
